@@ -12,11 +12,11 @@ CGI::Untaint::CountyStateProvince - Validate a state, county or province
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 our @countries;
 
@@ -35,14 +35,14 @@ US state, and so on.
     use CGI::Untaint::CountyStateProvince::GB;
     my $info = CGI::Info->new();
     my $u = CGI::Untaint->new($info->params());
-    $u->extract(-as_CountyStateProvince => 'state');
+    my $csp = $u->extract(-as_CountyStateProvince => 'state');	# Will be lower case
     # ...
 
 =head1 SUBROUTINES/METHODS
 
 =head2 is_valid
 
-Validates the data
+Validates the data.
 
 =cut
 
@@ -63,7 +63,12 @@ sub is_valid {
 
 	foreach my $country (@countries) {
 		$country->value($value);
-		unless($country->is_valid($value)) {
+		my $new_value = $country->is_valid($value);
+		if($new_value) {
+			if($new_value ne $value) {
+				$self->value($new_value);
+			}
+		} else {
 			return 0;
 		}
 	}
