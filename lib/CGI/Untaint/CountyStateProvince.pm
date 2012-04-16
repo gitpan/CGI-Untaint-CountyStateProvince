@@ -12,31 +12,31 @@ CGI::Untaint::CountyStateProvince - Validate a state, county or province
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 our @countries;
 
 =head1 SYNOPSIS
 
-CGI::Untaint::CountyStateProvince is a subclass of CGI::Untaint used to validate if
-the given user data is a valid county/state/province.
+CGI::Untaint::CountyStateProvince is a subclass of CGI::Untaint used to
+validate if the given user data is a valid county/state/province.
 
 This class is not to be instantiated, instead a subclass must be
-instantiated. For example L<CGI::Untaint::CountyStateProvince::GB> would validate
-against a British county, CGI::Untaint::CountyStateProvince::US would validate against a
-US state, and so on.
+instantiated. For example L<CGI::Untaint::CountyStateProvince::GB> would
+validate against a British county, CGI::Untaint::CountyStateProvince::US would
+validate against a US state, and so on.
 
     use CGI::Info;
     use CGI::Untaint;
     use CGI::Untaint::CountyStateProvince::GB;
     my $info = CGI::Info->new();
     my $u = CGI::Untaint->new($info->params());
-    my $csp = $u->extract(-as_CountyStateProvince => 'state');	# Will be lower case
-    # ...
+    my $csp = $u->extract(-as_CountyStateProvince => 'state');
+    # $csp will be lower case
 
 =head1 SUBROUTINES/METHODS
 
@@ -63,7 +63,7 @@ sub is_valid {
 
 	foreach my $country (@countries) {
 		$country->value($value);
-		my $new_value = $country->is_valid($value);
+		my $new_value = $country->is_valid();
 		if($new_value) {
 			if($new_value ne $value) {
 				$self->value($new_value);
